@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:latest AS build
 WORKDIR /src
 
-COPY WeatherAPI.csproj .
+COPY WeatherAPI/WeatherAPI.csproj .
 RUN dotnet restore
 
 COPY . .
