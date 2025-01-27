@@ -12,6 +12,6 @@ jobs:
       - name: Build the Docker image
         run: |
           export PAT=${{secrets.GHTOKEN}}
-          docker login ghcr.io -u magedragheb -p ${{secrets.GHTOKEN}}
+          echo $PAT | docker login ghcr.io -u magedragheb --password-stdin
           docker build . -t ghcr.io/magedragheb/weatherapi:latest
           docker push ghcr.io/magedragheb/weatherapi:latest
