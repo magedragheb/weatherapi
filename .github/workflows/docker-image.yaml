@@ -2,16 +2,15 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build-publish-ghcr:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: | 
-        docker login --username magedragheb --password ${{ secrets.GHTOKEN }}
-        docker build . --tag ghcr.io/magedragheb/weatherapi:latest
-        docker push ghcr.io/magedragheb/weatherapi:latest
-
+      - uses: actions/checkout@v4
+      - name: Build the Docker image
+        run: |
+          docker login ghcr.io -u magedragheb --password-stdin ${{ secrets.GHTOKEN }}
+          docker build . -t ghcr.io/magedragheb/weatherapi:latest
+          docker push ghcr.io/magedragheb/weatherapi:latest
