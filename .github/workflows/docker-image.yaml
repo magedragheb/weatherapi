@@ -5,21 +5,29 @@ on:
     branches: ["main"]
 
 jobs:
-  login-ghcr:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Login to GitHub Container Registry
+      - 
+        name: Checkout the repository
+        uses: actions/checkout@v4
+      - 
+        name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GHTOKEN }}
+      - 
+        name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest 
+          labels: |
+            repo=${{ github.repository }}
+            commit=${{ github.sha }}
+            branch=${{ github.ref_name }}
+  
 
-  build-publish-ghcr:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build the Docker image
-        uses: actions/checkout@v4
-      - run: |
-          docker build . -t ghcr.io/magedragheb/weatherapi:latest
-          docker push ghcr.io/magedragheb/weatherapi:latest
