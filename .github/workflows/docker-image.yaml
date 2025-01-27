@@ -5,13 +5,21 @@ on:
     branches: ["main"]
 
 jobs:
+  login-ghcr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHTOKEN }}
+
   build-publish-ghcr:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - name: Build the Docker image
-        run: |
-          export PAT=${{secrets.GHTOKEN}}
-          echo $PAT | docker login ghcr.io -u magedragheb --password-stdin
+        uses: actions/checkout@v4
+      - run: |
           docker build . -t ghcr.io/magedragheb/weatherapi:latest
           docker push ghcr.io/magedragheb/weatherapi:latest
