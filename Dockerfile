@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
 WORKDIR /src
 
-COPY WeatherApi/WeatherApi.csproj .
+COPY WeatherApi.csproj .
 RUN dotnet restore
 
 COPY . .
