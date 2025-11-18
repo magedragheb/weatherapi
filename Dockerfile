@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
 WORKDIR /src
 
-COPY WeatherAPI/WeatherAPI.csproj .
+COPY WeatherApi/WeatherApi.csproj .
 RUN dotnet restore
 
 COPY . .
@@ -15,4 +15,4 @@ WORKDIR /app
 EXPOSE 8080
 COPY --from=publish /app/publish .
 USER app
-ENTRYPOINT ["dotnet", "WeatherAPI.dll"]
+ENTRYPOINT ["dotnet", "WeatherApi.dll"]
