@@ -23,6 +23,7 @@ app.MapGet("/config", () =>
         Jwt = new
         {
             Secret = builder.Configuration.GetValue<string>("Jwt:Secret"),
+            dotsecret = builder.Configuration.GetValue<string>("Jwt.Secret"),
             Issuer = builder.Configuration.GetValue<string>("Jwt:Issuer")
         },
         Name = builder.Environment.ApplicationName,
