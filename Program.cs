@@ -19,9 +19,12 @@ app.MapGet("/config", () =>
 {
     return Results.Ok(new
     {
-        Config = builder.Configuration.AsEnumerable()
-            .GroupBy(kv => kv.Key.Split(':')[0])
-            .ToDictionary(g => g.Key, g => g.ToDictionary(kv => kv.Key, kv => kv.Value)),
+        ConnectionString = builder.Configuration.GetValue<string>("ConnectionString"),
+        Jwt = new
+        {
+            Secret = builder.Configuration.GetValue<string>("Jwt:Secret"),
+            Issuer = builder.Configuration.GetValue<string>("Jwt:Issuer")
+        },
         Name = builder.Environment.ApplicationName,
         Environment = builder.Environment.EnvironmentName,
         Version = typeof(Program).Assembly.GetName().Version?.ToString()
