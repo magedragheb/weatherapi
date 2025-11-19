@@ -15,6 +15,19 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
+app.MapGet("/config", () =>
+{
+    return Results.Ok(new
+    {
+        Config = builder.Configuration.AsEnumerable()
+            .GroupBy(kv => kv.Key.Split(':')[0])
+            .ToDictionary(g => g.Key, g => g.ToDictionary(kv => kv.Key, kv => kv.Value)),
+        Name = builder.Environment.ApplicationName,
+        Environment = builder.Environment.EnvironmentName,
+        Version = typeof(Program).Assembly.GetName().Version?.ToString()
+    });
+});
+
 app.MapGet("/weatherforecast", () =>
 {
     var forecast = Enumerable.Range(1, 5).Select(index =>
